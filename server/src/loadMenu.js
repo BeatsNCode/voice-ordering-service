@@ -1,11 +1,11 @@
-const csv = require('csv-parser')
-const fs = require('fs')
+import csv from 'csv-parser'
+import { createReadStream } from 'fs'
 
 const loadMenu = () => {
   const results = []
 
   return new Promise((resolve, reject) => {
-    fs.createReadStream('../data/menu.csv')
+    createReadStream('../data/menu.csv')
       .pipe(csv())
       .on('data', (data) => results.push(data))
       .on('end', () => resolve(results))
@@ -13,4 +13,4 @@ const loadMenu = () => {
   })
 }
 
-module.exports = loadMenu;
+export default loadMenu;

@@ -1,8 +1,9 @@
-const express = require('express');
+import express from 'express';
+import loadMenu from './loadMenu';
+
 const app = express();
 const port = 3000;
 const host = "127.0.0.1";
-const loadMenu = require('./loadMenu');
 
 app.get('/', async (req, res) => {
   try {

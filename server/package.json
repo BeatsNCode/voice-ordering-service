@@ -1,0 +1,24 @@
+{
+  "name": "voice-ordering-service",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/BeatsNCode/voice-ordering-service#readme",
+  "bugs": {
+    "url": "https://github.com/BeatsNCode/voice-ordering-service/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BeatsNCode/voice-ordering-service.git"
+  },
+  "license": "ISC",
+  "author": "Jean R Augustin",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "csv-parser": "^3.2.1",
+    "express": "^5.2.1"
+  }
+}

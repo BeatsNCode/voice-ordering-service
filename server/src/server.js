@@ -20,5 +20,5 @@ app.get('/', async (req, res) => {
 });
 
 app.listen(port, host, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`Voice Ordering Service listening on port ${port}`);
 });

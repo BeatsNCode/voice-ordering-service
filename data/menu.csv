@@ -1,6 +1,5 @@
 item_id,name,category,price,available
 B001,Classic Burger,Burgers,10.99,TRUE
-B002,Bacon Cheeseburger,Burgers,13.49,TRUE
 B003,Double Cheeseburger,Burgers,14.99,TRUE
 B004,Spicy Chicken Sandwich,Sandwiches,11.99,TRUE
 S001,French Fries,Sides,4.49,TRUE

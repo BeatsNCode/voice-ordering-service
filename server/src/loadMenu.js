@@ -1,5 +1,5 @@
-import csv from 'csv-parser'
-import { createReadStream } from 'fs'
+import csv from 'csv-parser';
+import { createReadStream } from 'fs';
 
 const loadMenu = () => {
   const results = []

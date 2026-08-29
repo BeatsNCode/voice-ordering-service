@@ -1,5 +1,5 @@
 import express from 'express';
-import loadMenu from './loadMenu';
+import loadMenu from './loadMenu.js';
 
 const app = express();
 const port = 3000;

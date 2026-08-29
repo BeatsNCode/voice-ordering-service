@@ -5,7 +5,8 @@ const app = express();
 const port = 3000;
 const host = "127.0.0.1";
 
-app.get('/', async (req, res) => {
+
+app.get('/api', async (req, res) => {
   try {
     const menu = await loadMenu();
 

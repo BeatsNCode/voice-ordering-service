@@ -38,3 +38,6 @@ dist-ssr/
 
 # Test coverage
 coverage/
+
+# Local project documentation
+docs/*

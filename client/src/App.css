@@ -1,0 +1,45 @@
+.microphone-container {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 10px 14px;
+
+  background: #23242b;
+  border: 1px solid #3a3c45;
+  border-radius: 999px;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.microphone-button {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid #dad5d5;
+  border-radius: 50%;
+
+  background: #2d2f36;
+  color: white;
+
+  cursor: pointer;
+}
+
+.microphone-container.listening .microphone-button {
+  border-color: #04AA6D;
+  box-shadow: 0 0 14px rgba(4, 170, 109, 0.6);
+}
+
+.microphone-label {
+  white-space: nowrap;
+  font-size: 14px;
+  color: #d1d5db;
+}

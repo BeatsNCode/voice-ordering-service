@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import Microphone from './microphone'
 
 type MenuItem = {
   name: string
@@ -41,7 +42,7 @@ function Menu() {
   return (
     <>
       <h1 style={{ paddingTop: '20px', paddingBottom: '10px' }}>Voice Ordering Service</h1>
-
+      <Microphone />
       {menu.map((item, index) => (
         <div style={{ paddingTop: '5px' }} key={index} className="menu-item">
           <h2>{item.name}</h2>

@@ -1,4 +1,5 @@
 import Menu from './components/menu'
+import './App.css';
 
 function App() {
   

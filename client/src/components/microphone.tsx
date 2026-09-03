@@ -1,5 +1,5 @@
-import { Mic } from 'lucide-react'
-import { useState } from 'react'
+import { Mic } from 'lucide-react';
+import { useState } from 'react';
 
 function Microphone() {
     const [isListening, setIsListening] = useState(false)

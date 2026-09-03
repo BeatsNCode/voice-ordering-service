@@ -41,11 +41,12 @@ function Menu() {
 
   return (
     <>
-      <h1 style={{ paddingTop: '20px', paddingBottom: '10px' }}>Voice Ordering Service</h1>
+      <h1 style={{ paddingTop: '20px', paddingBottom: '30px' }}>Voice Ordering Service</h1>
+      <h2 style={{ paddingBottom: '10px' }}>Menu</h2>
       <Microphone />
       {menu.map((item, index) => (
-        <div style={{ paddingTop: '5px' }} key={index} className="menu-item">
-          <h2>{item.name}</h2>
+        <div style={{ paddingTop: '5px', border: '1px solid #3a3c45', margin: '30px 0' }} key={index} className="menu-item">
+          <h4>{item.name}</h4>
           <p>Price: ${item.price}</p>
         </div>
       ))}

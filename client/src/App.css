@@ -1,7 +1,14 @@
 h2 {
-    font-size: 24px;
-    font-weight: 1000;
-    color: #d1d5db;
+  font-size: 24px;
+  font-weight: 1000;
+  color: #d1d5db;
+}
+
+.App {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-bottom: 80px;
 }
 
 .microphone-container {
@@ -48,4 +55,31 @@ h2 {
   white-space: nowrap;
   font-size: 14px;
   color: #d1d5db;
+}
+
+@media (max-width: 600px) {
+
+  .menu-item {
+    width: 78%;
+    margin: 12px auto !important;
+    padding: 10px 14px;
+    box-sizing: border-box;
+  }
+
+  .menu-item h2 {
+    font-size: 15px;
+    margin: 8px 0;
+  }
+
+  .menu-item p {
+    font-size: 13px;
+    margin: 8px 0;
+  }
+
+  .microphone-container {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: 16px;
+  }
 }

@@ -47,7 +47,7 @@ function Menu() {
       {menu.map((item, index) => (
         <div style={{ paddingTop: '5px', border: '1px solid #3a3c45', margin: '30px 0' }} key={index} className="menu-item">
           <h4>{item.name}</h4>
-          <p>Price: ${item.price}</p>
+          <p>${item.price}</p>
         </div>
       ))}
     </>

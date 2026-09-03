@@ -3,11 +3,15 @@ import { useState } from 'react';
 
 function Microphone() {
     const [isListening, setIsListening] = useState(false)
+    const handleClick = () => {
+        setIsListening(prev => !prev)
+    }
+
     return (
         <div className={`microphone-container ${isListening ? 'listening' : ''}`}>
         <button
             className="microphone-button"
-            onClick={() => setIsListening(prev => !prev)}
+            onClick={handleClick}
         >
             <Mic />
         </button>

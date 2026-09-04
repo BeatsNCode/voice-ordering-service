@@ -133,9 +133,8 @@ h2 {
   .menu-layout {
     flex-direction: column;
     gap: 0;
-
     width: 100%;
-    margin-top: 20px;
+    margin-top: 10px;
   }
 
   .menu-left,
@@ -145,18 +144,18 @@ h2 {
 
   .menu-section {
     width: 100%;
-    margin-bottom: 32px;
+    margin-bottom: 24px;
   }
 
   .menu-section > h2 {
-    padding-bottom: 0;
+    padding-bottom: 8px;
     margin-bottom: 12px;
   }
 
   .menu-item {
-    width: 78%;
-    margin: 0 0 30px 0;
-    padding: 10px 14px;
+    width: 90%;
+    margin: 12px auto;
+    padding: 12px 16px;
   }
 
   .menu-item h4 {
@@ -171,7 +170,6 @@ h2 {
     left: 50%;
     right: auto;
     bottom: 16px;
-
     transform: translateX(-50%);
   }
 

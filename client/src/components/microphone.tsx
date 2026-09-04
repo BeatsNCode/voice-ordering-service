@@ -5,7 +5,9 @@ function Microphone() {
     const [isListening, setIsListening] = useState(false)
     const handleClick = () => {
         setIsListening(prev => !prev)
-        getMicrophonePermission()
+        if (!isListening) {
+            getMicrophonePermission()
+        }
     }
     const getMicrophonePermission = async () => {
         try {

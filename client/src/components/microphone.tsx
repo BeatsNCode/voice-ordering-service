@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 function Microphone() {
     const [isListening, setIsListening] = useState(false)
     const streamRef = useRef<MediaStream | null>(null)
+    const [audioLevel, setAudioLevel] = useState(0)
+    const animationFrameRef = useRef<number | null>(null)
 
     const handleClick = async () => {
         if (!isListening) {
@@ -13,6 +15,29 @@ function Microphone() {
                 })
                 console.log('Recording started:', stream)
                 streamRef.current = stream
+
+                const audioContext = new AudioContext()
+                const source = audioContext.createMediaStreamSource(stream)
+                const analyser = audioContext.createAnalyser()
+                source.connect(analyser)
+
+                  analyser.fftSize = 256
+
+                const dataArray = new Uint8Array(analyser.frequencyBinCount)
+
+                const trackAudio = () => {
+                analyser.getByteFrequencyData(dataArray)
+
+                const average =
+                    dataArray.reduce((sum, value) => sum + value, 0) /
+                    dataArray.length
+
+                setAudioLevel(Math.round(average))
+
+                animationFrameRef.current = requestAnimationFrame(trackAudio)
+                }
+
+                trackAudio()
                 setIsListening(true)
             } catch (error) {
                 console.error('Error accessing microphone', error)
@@ -24,6 +49,12 @@ function Microphone() {
         })
 
         streamRef.current = null
+        if (animationFrameRef.current !== null) {
+            cancelAnimationFrame(animationFrameRef.current)
+            animationFrameRef.current = null
+        }
+
+        setAudioLevel(0)
         setIsListening(false)
         }
     }
@@ -34,9 +65,17 @@ function Microphone() {
             className="microphone-button"
             onClick={handleClick}
         >
+        {isListening && (
+            <span
+                className="audio-ring"
+                style={{
+                    transform: `scale(${1 + Math.min(audioLevel / 150, 0.25)})`,
+                    opacity: Math.min(0.4 + audioLevel / 80, 1)
+                }}
+            />
+        )}
             <Mic />
         </button>
-
         <span className="microphone-label">
             {isListening ? 'Listening...' : 'Click to Place Order'}
         </span>

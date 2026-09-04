@@ -5,6 +5,15 @@ function Microphone() {
     const [isListening, setIsListening] = useState(false)
     const handleClick = () => {
         setIsListening(prev => !prev)
+        getMicrophonePermission()
+    }
+    const getMicrophonePermission = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            console.log('Microphone permission granted:', stream);
+        } catch (error) {
+            console.error('Error accessing microphone', error);
+        }
     }
 
     return (

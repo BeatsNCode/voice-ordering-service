@@ -11,15 +11,16 @@ function Microphone() {
                 const stream = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                 })
-                console.log('Microphone permission granted:', stream)
+                console.log('Recording started:', stream)
                 streamRef.current = stream
                 setIsListening(true)
             } catch (error) {
                 console.error('Error accessing microphone', error)
         }
         } else {
-        streamRef.current?.getTracks().forEach(track => {
-            track.stop()
+            streamRef.current?.getTracks().forEach(track => {
+                track.stop()
+                console.log('Recording stopped:', track)
         })
 
         streamRef.current = null

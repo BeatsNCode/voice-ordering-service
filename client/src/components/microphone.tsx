@@ -1,20 +1,29 @@
 import { Mic } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 function Microphone() {
     const [isListening, setIsListening] = useState(false)
-    const handleClick = () => {
-        setIsListening(prev => !prev)
+    const streamRef = useRef<MediaStream | null>(null)
+
+    const handleClick = async () => {
         if (!isListening) {
-            getMicrophonePermission()
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    audio: true,
+                })
+                console.log('Microphone permission granted:', stream)
+                streamRef.current = stream
+                setIsListening(true)
+            } catch (error) {
+                console.error('Error accessing microphone', error)
         }
-    }
-    const getMicrophonePermission = async () => {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            console.log('Microphone permission granted:', stream);
-        } catch (error) {
-            console.error('Error accessing microphone', error);
+        } else {
+        streamRef.current?.getTracks().forEach(track => {
+            track.stop()
+        })
+
+        streamRef.current = null
+        setIsListening(false)
         }
     }
 

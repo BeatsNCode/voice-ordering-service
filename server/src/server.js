@@ -1,5 +1,6 @@
 import express from 'express';
 import loadMenu from './loadMenu.js';
+import transcribeAudio from './speech/transcribeAudio.js';
 
 const app = express();
 const port = 3000;
@@ -22,10 +23,23 @@ app.post('/api/audio', async (req, res) => {
 
     // Process the audioBuffer here (e.g., send it to a speech-to-text service)
     console.log('Received audio data:', audioBuffer);
-    console.log('Content-Type:', req.headers['content-type'])
     console.log('Audio bytes:', audioBuffer.length)
 
-    res.status(200).json({ message: 'Audio received successfully' });
+    const contentType = req.headers['content-type']
+
+    console.log('Sending audio to Deepgram...')
+
+    const transcript = await transcribeAudio(
+        audioBuffer,
+        contentType
+    )
+
+    console.log('Transcript:', transcript)
+
+    res.status(200).json({
+        transcript
+    })
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to process audio' });

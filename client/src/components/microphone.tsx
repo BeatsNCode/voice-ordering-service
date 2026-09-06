@@ -29,28 +29,45 @@ function Microphone() {
                 chunks.push(e.data);
                 };
 
-                mediaRecorder.onstop = () => {
+                console.log(chunks);
+
+                mediaRecorder.onstop = async () => {
                     console.log("recorder stopped")
 
                     streamRef.current?.getTracks().forEach(track => {
                     track.stop()
-                })
+                    })
 
-                streamRef.current = null
-                mediaRecorderRef.current = null
+                    streamRef.current = null
+                    mediaRecorderRef.current = null
 
-                const blob = new Blob(chunks, {
-                    type: mediaRecorder.mimeType
-                })
+                    const blob = new Blob(chunks, {
+                        type: mediaRecorder.mimeType
+                    })
 
-                chunks = []
+                    const response = await fetch('/api/audio', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': blob.type
+                        },
+                        body: blob
+                    })
 
-                const audioURL = URL.createObjectURL(blob)
-                const audio = new Audio(audioURL)
-                audio.play()
-            }
-            
-                console.log(chunks);
+                    const result = await response.json()
+                    console.log('Server response:', result)
+
+                    chunks = []
+
+
+                    const audioURL = URL.createObjectURL(blob)
+                    const audio = new Audio(audioURL)
+                    audio.addEventListener('canplaythrough', () => {
+                        audio.play()
+                    }, { once: true })
+
+                }
+
+
 
                 const audioContext = new AudioContext()
                 const source = audioContext.createMediaStreamSource(stream)

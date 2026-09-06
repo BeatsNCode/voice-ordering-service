@@ -11,7 +11,7 @@ if (!DEEPGRAM_API_KEY) {
 
 export const createDeepgramConnection = async () => {
   const deepgram = new DeepgramClient({
-    apiKey: DEEPGRAM_API_KEY,
+    apiKey: DEEPGRAM_API_KEY
   });
 
   const socket = await deepgram.listen.v1.createConnection({

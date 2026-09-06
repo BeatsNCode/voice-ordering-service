@@ -51,7 +51,7 @@ function Menu() {
   return (
   <>
     <h1 style={{ paddingTop: '20px', paddingBottom: '20px' }}>Voice Ordering Service</h1>
-    <h2 style={{ paddingTop: '10px', paddingBottom: '5px' }}>Menu</h2>
+    <h2 style={{ paddingTop: '25px', paddingBottom: '5px' }}>Menu</h2>
     <Microphone />
     
     <div className="menu-layout">

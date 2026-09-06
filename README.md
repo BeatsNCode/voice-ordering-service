@@ -172,7 +172,6 @@ Example response:
 [
   {
     "name": "Chicken Sandwich",
-    "description": "Crispy chicken sandwich",
     "price": 8.99
   }
 ]
@@ -202,6 +201,8 @@ voice-ordering-service/
 │   └── package.json
 │
 ├── server/
+│   ├── speech/
+│   │   └── deepgram.js
 │   ├── src/
 │   │   ├── server.js
 │   │   └── loadMenu.js

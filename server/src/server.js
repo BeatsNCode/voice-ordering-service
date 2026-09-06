@@ -1,6 +1,7 @@
 import express from 'express';
 import loadMenu from './loadMenu.js';
-import transcribeAudio from './speech/transcribeAudio.js';
+import {transcribeAudio} from './speech/transcribeAudio.js';
+import {parseOrder} from './speech/orderParser.js';
 
 const app = express();
 const port = 3000;
@@ -34,10 +35,18 @@ app.post('/api/audio', async (req, res) => {
         contentType
     )
 
+    const menu = await loadMenu()
+    const orderItems = parseOrder(transcript, menu)
+
+    console.log('Order items:', orderItems)
+
+
     console.log('Transcript:', transcript)
 
+
     res.status(200).json({
-        transcript
+        transcript,
+        orderItems
     })
 
   } catch (error) {

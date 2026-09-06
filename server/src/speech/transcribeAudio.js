@@ -2,7 +2,7 @@ import { DeepgramClient } from '@deepgram/sdk';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const transcribeAudio = async (audioBuffer, contentType) => {
+export const transcribeAudio = async (audioBuffer, contentType) => {
     const DEEPGRAM_API_KEY = process.env.DEEPGRAM_API_KEY
 
     if (!DEEPGRAM_API_KEY) {
@@ -23,7 +23,6 @@ const transcribeAudio = async (audioBuffer, contentType) => {
         )
 
         const transcript = response.results?.channels?.[0]?.alternatives?.[0]?.transcript
-        console.log('Transcript:', transcript)
 
         return transcript ?? ''
     } catch (error) {
@@ -31,5 +30,3 @@ const transcribeAudio = async (audioBuffer, contentType) => {
         throw error
     }
 }
-
-export default transcribeAudio

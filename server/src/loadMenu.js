@@ -7,7 +7,13 @@ const loadMenu = () => {
   return new Promise((resolve, reject) => {
     createReadStream('../data/menu.csv')
       .pipe(csv())
-      .on('data', (data) => results.push(data))
+      .on('data', (data) => {
+          results.push({
+              ...data,
+              price: Number(data.price),
+              available: data.available === 'TRUE'
+          })
+      })
       .on('end', () => resolve(results))
       .on('error', reject)
   })

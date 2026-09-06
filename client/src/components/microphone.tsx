@@ -16,6 +16,26 @@ function Microphone() {
                 console.log('Recording started:', stream)
                 streamRef.current = stream
 
+                const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+                console.log(mediaRecorder.state);
+                console.log("recorder started");
+
+                let chunks: Blob[] = [];
+
+                mediaRecorder.ondataavailable = (e) => {
+                chunks.push(e.data);
+                };
+
+                mediaRecorder.onstop = (e) => {
+                    console.log("recorder stopped");
+                    const blob = new Blob(chunks, { type: "audio/webm; codecs=opus" });
+                    chunks = [];
+                    const audioURL = window.URL.createObjectURL(blob);
+                    const audio = new Audio(audioURL);
+                    audio.play();
+                }
+
                 const audioContext = new AudioContext()
                 const source = audioContext.createMediaStreamSource(stream)
                 const analyser = audioContext.createAnalyser()

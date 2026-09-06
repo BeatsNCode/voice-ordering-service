@@ -3,15 +3,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const DEEPGRAM_API_SECRET = process.env.DEEPGRAM_API_SECRET;
+const DEEPGRAM_API_KEY = process.env.DEEPGRAM_API_KEY;
 
-if (!DEEPGRAM_API_SECRET) {
-  throw new Error('DEEPGRAM_API_SECRET is not defined');
+if (!DEEPGRAM_API_KEY) {
+  throw new Error('DEEPGRAM_API_KEY is not defined');
 }
 
 export const createDeepgramConnection = async () => {
   const deepgram = new DeepgramClient({
-    apiKey: DEEPGRAM_API_SECRET,
+    apiKey: DEEPGRAM_API_KEY,
   });
 
   const socket = await deepgram.listen.v1.createConnection({

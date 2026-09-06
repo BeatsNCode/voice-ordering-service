@@ -58,7 +58,6 @@ function Microphone() {
 
                     chunks = []
 
-
                     const audioURL = URL.createObjectURL(blob)
                     const audio = new Audio(audioURL)
                     audio.addEventListener('canplaythrough', () => {
@@ -66,8 +65,6 @@ function Microphone() {
                     }, { once: true })
 
                 }
-
-
 
                 const audioContext = new AudioContext()
                 const source = audioContext.createMediaStreamSource(stream)

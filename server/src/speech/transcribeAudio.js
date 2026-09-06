@@ -18,7 +18,9 @@ export const transcribeAudio = async (audioBuffer, contentType) => {
             audioBuffer,
             {
                 model: 'nova-3',
-                smart_format: true
+                smart_format: true,
+                numerals: true,
+                punctuate: true
             }
         )
 

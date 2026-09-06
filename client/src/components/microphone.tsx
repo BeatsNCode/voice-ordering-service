@@ -29,6 +29,8 @@ function Microphone() {
                 chunks.push(e.data);
                 };
 
+                console.log(chunks);
+
                 mediaRecorder.onstop = async () => {
                     console.log("recorder stopped")
 
@@ -56,12 +58,16 @@ function Microphone() {
 
                     chunks = []
 
+
                     const audioURL = URL.createObjectURL(blob)
                     const audio = new Audio(audioURL)
-                    audio.play()
+                    audio.addEventListener('canplaythrough', () => {
+                        audio.play()
+                    }, { once: true })
+
                 }
 
-                console.log(chunks);
+
 
                 const audioContext = new AudioContext()
                 const source = audioContext.createMediaStreamSource(stream)

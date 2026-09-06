@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 function Microphone() {
     const [isListening, setIsListening] = useState(false)
     const streamRef = useRef<MediaStream | null>(null)
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const [audioLevel, setAudioLevel] = useState(0)
     const animationFrameRef = useRef<number | null>(null)
 
@@ -17,6 +18,7 @@ function Microphone() {
                 streamRef.current = stream
 
                 const mediaRecorder = new MediaRecorder(stream);
+                mediaRecorderRef.current = mediaRecorder;
                 mediaRecorder.start();
                 console.log(mediaRecorder.state);
                 console.log("recorder started");
@@ -27,21 +29,35 @@ function Microphone() {
                 chunks.push(e.data);
                 };
 
-                mediaRecorder.onstop = (e) => {
-                    console.log("recorder stopped");
-                    const blob = new Blob(chunks, { type: "audio/webm; codecs=opus" });
-                    chunks = [];
-                    const audioURL = window.URL.createObjectURL(blob);
-                    const audio = new Audio(audioURL);
-                    audio.play();
-                }
+                mediaRecorder.onstop = () => {
+                    console.log("recorder stopped")
+
+                    streamRef.current?.getTracks().forEach(track => {
+                    track.stop()
+                })
+
+                streamRef.current = null
+                mediaRecorderRef.current = null
+
+                const blob = new Blob(chunks, {
+                    type: mediaRecorder.mimeType
+                })
+
+                chunks = []
+
+                const audioURL = URL.createObjectURL(blob)
+                const audio = new Audio(audioURL)
+                audio.play()
+            }
+            
+                console.log(chunks);
 
                 const audioContext = new AudioContext()
                 const source = audioContext.createMediaStreamSource(stream)
                 const analyser = audioContext.createAnalyser()
                 source.connect(analyser)
 
-                  analyser.fftSize = 256
+                analyser.fftSize = 256
 
                 const dataArray = new Uint8Array(analyser.frequencyBinCount)
 
@@ -61,21 +77,17 @@ function Microphone() {
                 setIsListening(true)
             } catch (error) {
                 console.error('Error accessing microphone', error)
-        }
+            }
         } else {
-            streamRef.current?.getTracks().forEach(track => {
-                track.stop()
-                console.log('Recording stopped:', track)
-        })
+            mediaRecorderRef.current?.stop()
 
-        streamRef.current = null
-        if (animationFrameRef.current !== null) {
-            cancelAnimationFrame(animationFrameRef.current)
-            animationFrameRef.current = null
-        }
+            if (animationFrameRef.current !== null) {
+                cancelAnimationFrame(animationFrameRef.current)
+                animationFrameRef.current = null
+            }
 
-        setAudioLevel(0)
-        setIsListening(false)
+            setAudioLevel(0)
+            setIsListening(false)
         }
     }
 

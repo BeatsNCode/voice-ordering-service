@@ -1,5 +1,5 @@
-import { useState } from 'react';
 import type { OrderResult } from '../types/order';
+import { calculateOrderTotal } from '../types/order';
 
 export const playSpeech = async (text: string) => {
     try {
@@ -26,47 +26,92 @@ export const playSpeech = async (text: string) => {
 
 export const SpeechLogic = (result: OrderResult) => {
 
-    const availableItems = result.availableItems.map(item => ({
+    const formatList = (items: string[]) => {
+        if (items.length === 1) {
+            return items[0]
+        }
+        
+
+        const firstItems = items.slice(0, -1)
+        const lastItem = items[items.length - 1]
+
+        return `${firstItems.join(', ')} and ${lastItem}`
+    }
+
+    const formatItem = (item: { name: string, quantity: number }) => {
+        if (item.quantity === 1) {
+            return item.name
+        }
+
+        if (item.name.endsWith('s')) {
+            return `${item.quantity} ${item.name}`
+        }
+
+        return `${item.quantity} ${item.name}s`
+    }
+
+    const availableItems = result.availableItems.map(item => formatItem(({
         name: item.name,
         quantity: item.quantity
-    }))
+    })))
 
-    const unavailableItems = result.unavailableItems.map(item => item.name)
+    const unavailableItemNames = result.unavailableItems.map(item => item.name)
+    const invalidItemNames = result.invalidItems.map(item => item.name)
 
-    if (availableItems.length === 0 && 
-        result.unavailableItems.length === 0 && 
-        result.invalidItems.length > 0 ) {
-        return "Sorry, I couldn't find any of these items on the menu."
+    const availableText = formatList(
+        availableItems
+    )
+
+    const unavailableText = formatList(unavailableItemNames)
+
+    const invalidText = formatList(invalidItemNames)
+
+    const orderTotal = calculateOrderTotal(result)
+
+    if (availableItems.length > 0 &&
+        unavailableItemNames.length > 0 &&
+        invalidItemNames.length === 0
+    ) {
+        return `
+            ${availableText} ${availableItems.length === 1 ? 'was' : 'were'} added to the cart. 
+            Unfortunately, ${unavailableText} ${unavailableItemNames.length === 1 ? 'is' : 'are'} out of stock.
+            Your total is ${orderTotal}.
+        `
     }
 
-    if (availableItems.length === 0 && 
-        result.unavailableItems.length > 0 && 
-        result.invalidItems.length === 0 ) {
-        
-            if (unavailableItems.length === 1) {
-                return `${unavailableItems} is out of stock.`
-            }
-
-            const firstItems = unavailableItems.slice(0,-1).map(item=> item)
-            const lastItem = unavailableItems[unavailableItems.length-1]
-
-
-        return `${firstItems.join(', ')} and ${lastItem} are not in stock.`
+    if (
+        availableItems.length > 0 &&
+        unavailableItemNames.length === 0 &&
+        invalidItemNames.length > 0
+    ) {
+        return `
+            ${availableText} ${availableItems.length === 1 ? 'was' : 'were'} added to the cart. 
+            We don't offer ${invalidText} at this location. Your total is ${orderTotal}
+        `
     }
 
-    if (availableItems.length > 0 && 
-        result.unavailableItems.length === 0 && 
-        result.invalidItems.length === 0 ) {
+    if (
+        availableItems.length === 0 &&
+        unavailableItemNames.length > 0 &&
+        invalidItemNames.length > 0
+    ) {
+        return `
+            ${unavailableText} ${unavailableItemNames.length === 1 ? 'is' : 'are'} currently out of stock. 
+            We don't offer ${invalidText} at this location.
+        `
+    }
 
-            if (availableItems.length === 1) {
-                return `${availableItems[0].name} was added to the cart.`
-            }
-
-            const firstItems = availableItems.slice(0,-1).map(item=> item.name)
-            const lastItem = availableItems[availableItems.length-1].name
-
-
-        return `${firstItems.join(', ')} and ${lastItem} have been added to the cart.`
+    if (
+        availableItems.length > 0 &&
+        unavailableItemNames.length === 0 &&
+        invalidItemNames.length === 0
+    ) {
+        return `
+            ${availableText} ${
+                availableItems.length === 1 ? 'was' : 'were'
+            } added to the cart.
+            Your total is ${orderTotal}.
+        `
     }
 
     return "Sorry, I couldn't process your order."

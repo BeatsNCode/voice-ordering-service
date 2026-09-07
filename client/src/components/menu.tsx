@@ -155,7 +155,7 @@ function Menu() {
           ))}
         </section>
 
-        <section className="menu-section">
+        <section style={{marginTop: '63.5px'}} className="menu-section">
           <h3>Desserts</h3>
 
           {dessertItems.map((item, index) => (

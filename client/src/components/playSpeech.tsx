@@ -68,6 +68,26 @@ export const speechLogic = (result: OrderResult) => {
 
     const orderTotal = calculateOrderTotal(result)
 
+    if (
+        availableItems.length > 0 &&
+        unavailableItemNames.length > 0 &&
+        invalidItemNames.length > 0
+    ) {
+        return `
+            ${availableText} ${
+                availableItems.length === 1 ? 'was' : 'were'
+            } added to the cart.
+
+            Unfortunately, ${unavailableText} ${
+                unavailableItemNames.length === 1 ? 'is' : 'are'
+            } out of stock.
+
+            We don't offer ${invalidText} at this location.
+
+            Your total is ${orderTotal.toFixed(2)}.
+        `
+    }
+
     if (availableItems.length > 0 &&
         unavailableItemNames.length > 0 &&
         invalidItemNames.length === 0

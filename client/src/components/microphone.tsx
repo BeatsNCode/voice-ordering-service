@@ -4,9 +4,10 @@ import type { OrderResult } from '../types/order';
 
 type MicrophoneProps = {
   onOrderReceived?: (order: OrderResult) => void
+  onProcessingChange?: (isProcessing: boolean) => void
 }
 
-function Microphone({ onOrderReceived }: MicrophoneProps) {
+function Microphone({ onOrderReceived, onProcessingChange }: MicrophoneProps) {
     const [isListening, setIsListening] = useState(false)
     const streamRef = useRef<MediaStream | null>(null)
     const audioContextRef = useRef<AudioContext | null>(null)
@@ -51,16 +52,30 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
                         type: mediaRecorder.mimeType
                     })
 
-                    const response = await fetch('/api/audio', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': blob.type
-                        },
-                        body: blob
-                    })
+                    onProcessingChange?.(true)
 
-                    const result = await response.json()
-                    onOrderReceived?.(result)
+                    try {
+                        const response = await fetch('/api/audio', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': blob.type
+                            },
+                            body: blob
+                        })
+
+                        if (!response.ok) {
+                            throw new Error('Failed to process order')
+                        }
+
+                        const result = await response.json()
+                        onOrderReceived?.(result)
+
+                    } catch (error) {
+                        console.error('Error processing order', error)
+
+                    } finally {
+                        onProcessingChange?.(false)
+                    }
                          
                 }
 
@@ -91,6 +106,7 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
             } catch (error) {
                 console.error('Error accessing microphone', error)
             }
+            
         } else {
             mediaRecorderRef.current?.stop()
 

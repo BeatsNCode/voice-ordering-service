@@ -40,6 +40,8 @@ function Menu() {
   const [menu, setMenu] = useState<MenuItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [order, setOrder] = useState<OrderResult | null>(null)
+  const [isProcessingOrder, setIsProcessingOrder] = useState(false)
+  const hasCartItems = (order?.availableItems.length ?? 0) > 0
 
   useEffect(() => {
     const cleanup = loadMenu(setMenu)
@@ -67,6 +69,10 @@ function Menu() {
     playSpeech(speechText)
   }
 
+  const handleCartClick = () => {
+      setIsCartOpen(true)
+    }
+
 
   return (
   <>
@@ -75,7 +81,7 @@ function Menu() {
         Voice Ordering Service
       </h1>
 
-      <ShoppingCart onClick={() => setIsCartOpen(true)} />
+      <ShoppingCart onClick={() => setIsCartOpen(true)} hasUpdate={hasCartItems}/>
 
     </header>
 
@@ -124,10 +130,19 @@ function Menu() {
       </aside>
     )}
 
+    {isProcessingOrder && (
+      <div className="loading-overlay">
+        <div className="loading-spinner" />
+      </div>
+    )}
+
     <h2 style={{ paddingTop: '15px', paddingBottom: '5px' }}>
       Menu
     </h2>
-    <Microphone onOrderReceived={handleOrderReceived} />
+    <Microphone 
+      onOrderReceived={handleOrderReceived}
+      onProcessingChange={setIsProcessingOrder}
+    />
     
     <div className="menu-layout">
       <div className="menu-left">

@@ -1,15 +1,23 @@
 import { ShoppingCart as ShoppingCartIcon } from 'lucide-react';
 
 type ShoppingCartProps = {
-  onClick: () => void
+    onClick: () => void
+    hasUpdate: boolean
 }
 
-const ShoppingCart = ({ onClick }: ShoppingCartProps) => {
+function ShoppingCart({ onClick, hasUpdate }: ShoppingCartProps) {
   return (
-    <button style={{ border: 'none', background: 'none' }} onClick={onClick}>
+    <button
+      className="shopping-cart-button"
+      onClick={onClick}
+    >
       <ShoppingCartIcon />
+
+      {hasUpdate && (
+        <span className="cart-update-dot" />
+      )}
     </button>
-  );
-};
+  )
+}
 
 export default ShoppingCart;

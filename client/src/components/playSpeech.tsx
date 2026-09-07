@@ -24,7 +24,7 @@ export const playSpeech = async (text: string) => {
     }
 };
 
-export const SpeechLogic = (result: OrderResult) => {
+export const speechLogic = (result: OrderResult) => {
 
     const formatList = (items: string[]) => {
         if (items.length === 1) {
@@ -74,7 +74,7 @@ export const SpeechLogic = (result: OrderResult) => {
     ) {
         return `
             ${availableText} ${availableItems.length === 1 ? 'was' : 'were'} added to the cart. 
-            Unfortunately, ${unavailableText} ${unavailableItemNames.length === 1 ? 'is' : 'are'} out of stock.
+            Unfortunately, ${unavailableText} ${unavailableItemNames.length === 1 ? 'is' : 'are'} out of stock. 
             Your total is ${orderTotal}.
         `
     }

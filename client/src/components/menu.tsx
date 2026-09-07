@@ -3,7 +3,7 @@ import Microphone from './microphone';
 import ShoppingCart from './shoppingCart';
 import type { OrderResult } from '../types/order';
 import { calculateOrderTotal } from '../types/order';
-import { playSpeech, SpeechLogic } from './playSpeech'
+import { playSpeech, speechLogic } from './playSpeech'
 
 type MenuItem = {
   name: string
@@ -62,7 +62,7 @@ function Menu() {
     setOrder(result)
     console.log(result)
 
-    const speechText = await SpeechLogic(result)
+    const speechText = await speechLogic(result)
 
     playSpeech(speechText)
   }

@@ -54,16 +54,28 @@ function Microphone({ onOrderReceived, onProcessingChange }: MicrophoneProps) {
 
                     onProcessingChange?.(true)
 
-                    const response = await fetch('/api/audio', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': blob.type
-                        },
-                        body: blob
-                    })
+                    try {
+                        const response = await fetch('/api/audio', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': blob.type
+                            },
+                            body: blob
+                        })
 
-                    const result = await response.json()
-                    onOrderReceived?.(result)
+                        if (!response.ok) {
+                            throw new Error('Failed to process order')
+                        }
+
+                        const result = await response.json()
+                        onOrderReceived?.(result)
+
+                    } catch (error) {
+                        console.error('Error processing order', error)
+
+                    } finally {
+                        onProcessingChange?.(false)
+                    }
                          
                 }
 
@@ -93,8 +105,6 @@ function Microphone({ onOrderReceived, onProcessingChange }: MicrophoneProps) {
                 setIsListening(true)
             } catch (error) {
                 console.error('Error accessing microphone', error)
-            } finally {
-                onProcessingChange?.(false)
             }
             
         } else {

@@ -16,6 +16,35 @@ h2 {
   padding-bottom: 100px;
 }
 
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.app-header h1 {
+  margin: 0;
+}
+
+.desktop-cart {
+  display: block;
+}
+
+.hamburger-button {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.mobile-menu {
+  display: none;
+}
+
 /* Main two-column menu layout */
 .menu-layout {
   display: flex;
@@ -152,6 +181,28 @@ h2 {
     max-width: 600px;
     padding-bottom: 120px;
   }
+
+  @media (max-width: 768px) {
+  .desktop-cart {
+    display: none;
+  }
+
+  .hamburger-button {
+    display: block;
+  }
+
+  .mobile-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 100;
+    padding: 16px;
+    background: #23242b;
+    border: 1px solid #3a3c45;
+    border-radius: 8px;
+  }
+}
 
   .menu-layout {
     flex-direction: column;

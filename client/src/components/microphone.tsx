@@ -62,7 +62,6 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
                     const result = await response.json()
                     onOrderReceived?.(result)
                          
-                    console.log('Server response:', result)
                 }
 
                 const audioContext = new AudioContext()

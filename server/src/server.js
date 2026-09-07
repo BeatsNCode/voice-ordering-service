@@ -82,7 +82,6 @@ app.post('/api/audio', async (req, res) => {
     console.log('Invalid items:', invalid)
     console.log('Transcript:', transcript)
 
-
     res.status(200).json({
         transcript,
         requestedItems: requestedItems,

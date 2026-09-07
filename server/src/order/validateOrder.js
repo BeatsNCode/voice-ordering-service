@@ -4,10 +4,12 @@ export const validateOrder = async (transcript, menu) => {
     const orderItems = await interpretOrder(transcript, menu);
     const available = orderItems.filter(item => menu.some(menuItem => menuItem.item_id === item.item_id && menuItem.available === true));
     const unavailable = orderItems.filter(item => menu.some(menuItem => menuItem.item_id === item.item_id && menuItem.available === false));
+    const invalid = orderItems.filter(item => !menu.some(menuItem => menuItem.item_id === item.item_id));
 
     return {
         available,
-        unavailable
+        unavailable,
+        invalid
     };
 };
 

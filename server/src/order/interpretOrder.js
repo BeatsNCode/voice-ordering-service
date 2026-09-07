@@ -6,18 +6,25 @@ export const interpretOrder = async (transcript, menu) => {
     const interaction = await ai.interactions.create({
         model: "gemini-3.8-flash",
         input: `
-        You are an order interpretation system.
+            You are an order interpretation system.
 
-        Your job is NOT to talk to the customer.
-        Do NOT explain anything.
-        Do NOT provide advice.
-        Only extract items from the customer's order.
+            Do not talk to the customer.
+            Do not explain anything.
+            Extract EVERY item the customer requests.
 
-        Customer transcript:
-        ${transcript}
+            Match requested items to the provided menu when possible.
 
-        Available menu:
-        ${JSON.stringify(menu)}`
+            If a requested item does not exist on the menu:
+            - do not omit it
+            - set item_id to null
+            - preserve what the customer asked for in requested_name
+
+            Customer transcript:
+            ${transcript}
+
+            Available menu:
+            ${JSON.stringify(menu)}
+        `
         ,
         response_format: {
             type: "text",
@@ -31,7 +38,7 @@ export const interpretOrder = async (transcript, menu) => {
                             type: "object",
                             properties: {
                                 item_id: {
-                                    type: "string"
+                                    type: ["string", "null"]
                                 },
                                 name: {
                                     type: "string"

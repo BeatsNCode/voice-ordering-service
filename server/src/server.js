@@ -32,11 +32,12 @@ app.post('/api/audio', async (req, res) => {
 
     const menu = await loadMenu()
     const requestedItems = await interpretOrder(transcript, menu)
-    const { available, unavailable } = await validateOrder(transcript, menu)
+    const { available, unavailable, invalid } = await validateOrder(transcript, menu)
 
     console.log('Requested items:', requestedItems)
     console.log('Available items:', available)
     console.log('Unavailable items:', unavailable)
+    console.log('Invalid items:', invalid)
     console.log('Transcript:', transcript)
 
 
@@ -44,7 +45,8 @@ app.post('/api/audio', async (req, res) => {
         transcript,
         requestedItems: requestedItems,
         availableItems: available,
-        unavailableItems: unavailable
+        unavailableItems: unavailable,
+        invalidItems: invalid
     })
 
   } catch (error) {

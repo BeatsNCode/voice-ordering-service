@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import Microphone from './microphone';
 import ShoppingCart from './shoppingCart';
 import type { OrderResult } from '../types/order';
-import { playSpeech } from './playSpeech'
+import { calculateOrderTotal } from '../types/order';
+import { playSpeech, speechLogic } from './playSpeech'
 
 type MenuItem = {
   name: string
@@ -54,15 +55,17 @@ function Menu() {
 
   const dessertItems = menu.filter(item => item.category === 'dessert')
 
-  const orderTotal = order?.availableItems.reduce(
-    (total, item) => total + item.price * item.quantity,
-    0
-  ) ?? 0
+  const orderTotal = order
+  ? calculateOrderTotal(order)
+  : 0
 
   const handleOrderReceived = async (result: OrderResult) => {
     setOrder(result)
+    console.log(result)
 
-    await playSpeech('Your order has been added to the cart.')
+    const speechText = await speechLogic(result)
+
+    playSpeech(speechText)
   }
 
 
@@ -156,7 +159,7 @@ function Menu() {
           ))}
         </section>
 
-        <section className="menu-section">
+        <section style={{marginTop: '63.5px'}} className="menu-section">
           <h3>Desserts</h3>
 
           {dessertItems.map((item, index) => (

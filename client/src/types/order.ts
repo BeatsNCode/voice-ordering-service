@@ -8,7 +8,7 @@ export type OrderItem = {
 
 export type InvalidItem = {
   item_id: null
-  requested_name: string
+  name: string
   quantity: number
 }
 
@@ -17,4 +17,9 @@ export type OrderResult = {
   availableItems: OrderItem[]
   unavailableItems: OrderItem[]
   invalidItems: InvalidItem[]
+}
+
+export const calculateOrderTotal = (result: OrderResult) => {
+    return Math.round(result.availableItems.reduce(
+        (total, item) => total + item.price * item.quantity, 0) * 100) / 100;
 }

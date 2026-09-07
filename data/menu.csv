@@ -5,7 +5,8 @@ B004,Spicy Chicken Sandwich,Sandwiches,11.99,TRUE,sandwich
 S001,French Fries,Sides,4.49,TRUE,side
 S002,Onion Rings,Sides,5.49,TRUE,side
 S003,Mozzarella Sticks,Sides,6.99,FALSE,side
-D001,Coca-Cola,Drinks,2.99,TRUE,drink
-D002,Sprite,Drinks,2.99,TRUE,drink
+D001,Water,Drinks,0.99,TRUE,drink
+D002,Coca-Cola,Drinks,2.99,TRUE,drink
+D003,Sprite,Drinks,2.99,TRUE,drink
 SH001,Vanilla Milkshake,Shakes,5.99,TRUE,drink
 DS001,Chocolate Chip Cookie,Desserts,2.99,FALSE,dessert

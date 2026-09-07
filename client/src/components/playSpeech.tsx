@@ -31,6 +31,8 @@ export const SpeechLogic = (result: OrderResult) => {
         quantity: item.quantity
     }))
 
+    const unavailableItems = result.unavailableItems.map(item => item.name)
+
     if (availableItems.length === 0 && 
         result.unavailableItems.length === 0 && 
         result.invalidItems.length > 0 ) {
@@ -40,7 +42,16 @@ export const SpeechLogic = (result: OrderResult) => {
     if (availableItems.length === 0 && 
         result.unavailableItems.length > 0 && 
         result.invalidItems.length === 0 ) {
-        return "Sorry, we're out of stock."
+        
+            if (unavailableItems.length === 1) {
+                return `${unavailableItems} is out of stock.`
+            }
+
+            const firstItems = unavailableItems.slice(0,-1).map(item=> item)
+            const lastItem = unavailableItems[unavailableItems.length-1]
+
+
+        return `${firstItems.join(', ')} and ${lastItem} are not in stock.`
     }
 
     if (availableItems.length > 0 && 

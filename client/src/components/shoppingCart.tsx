@@ -1,9 +1,15 @@
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart as ShoppingCartIcon } from 'lucide-react';
 
-const App = () => {
+type ShoppingCartProps = {
+  onClick: () => void
+}
+
+const ShoppingCart = ({ onClick }: ShoppingCartProps) => {
   return (
-    <ShoppingCart />
+    <button style={{ border: 'none', background: 'none' }} onClick={onClick}>
+      <ShoppingCartIcon />
+    </button>
   );
 };
 
-export default App;
+export default ShoppingCart;

@@ -36,6 +36,7 @@ function loadMenu(setMenu: React.Dispatch<React.SetStateAction<MenuItem[]>>) {
 function Menu() {
   const [menu, setMenu] = useState<MenuItem[]>([])
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
 
   useEffect(() => {
     const cleanup = loadMenu(setMenu)
@@ -53,10 +54,12 @@ function Menu() {
   return (
   <>
     <header className="app-header">
-      <h1 style={{ margin: 'auto' }}>Voice Ordering Service</h1>
+      <h1 style={{ margin: 'auto' }}>
+        Voice Ordering Service
+      </h1>
 
       <div className="desktop-cart">
-        <ShoppingCart />
+        <ShoppingCart onClick={() => setIsCartOpen(true)} />
       </div>
 
       <button
@@ -70,12 +73,31 @@ function Menu() {
 
       {isMenuOpen && (
         <div className="mobile-menu">
-          <ShoppingCart />
+          <ShoppingCart onClick={() => setIsCartOpen(true)} />
         </div>
       )}
     </header>
-    
-    <h2 style={{ paddingTop: '25px', paddingBottom: '5px' }}>Menu</h2>
+
+    {isCartOpen && (
+      <aside className="shopping-cart-drawer">
+        <button
+          className="cart-close-button"
+          onClick={() => setIsCartOpen(false)}
+          aria-label="Close shopping cart"
+        >
+          ×
+        </button>
+
+        <h2>Your Order</h2>
+
+
+
+      </aside>
+    )}
+
+    <h2 style={{ paddingTop: '15px', paddingBottom: '5px' }}>
+      MENU
+    </h2>
     <Microphone />
     
     <div className="menu-layout">

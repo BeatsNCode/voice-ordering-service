@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react'
-import Microphone from './microphone'
+import { useEffect, useState } from 'react';
+import Microphone from './microphone';
+import ShoppingCart from './shoppingCart';
 
 type MenuItem = {
   name: string
@@ -34,6 +35,7 @@ function loadMenu(setMenu: React.Dispatch<React.SetStateAction<MenuItem[]>>) {
 
 function Menu() {
   const [menu, setMenu] = useState<MenuItem[]>([])
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
     const cleanup = loadMenu(setMenu)
@@ -50,7 +52,29 @@ function Menu() {
 
   return (
   <>
-    <h1 style={{ paddingTop: '20px', paddingBottom: '20px' }}>Voice Ordering Service</h1>
+    <header className="app-header">
+      <h1 style={{ margin: 'auto' }}>Voice Ordering Service</h1>
+
+      <div className="desktop-cart">
+        <ShoppingCart />
+      </div>
+
+      <button
+        className="hamburger-button"
+        onClick={() => setIsMenuOpen(prev => !prev)}
+        aria-label="Open navigation menu"
+        aria-expanded={isMenuOpen}
+      >
+        ☰
+      </button>
+
+      {isMenuOpen && (
+        <div className="mobile-menu">
+          <ShoppingCart />
+        </div>
+      )}
+    </header>
+    
     <h2 style={{ paddingTop: '25px', paddingBottom: '5px' }}>Menu</h2>
     <Microphone />
     

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Microphone from './microphone';
 import ShoppingCart from './shoppingCart';
 import type { OrderResult } from '../types/order';
+import { playSpeech } from './playSpeech'
 
 type MenuItem = {
   name: string
@@ -36,7 +37,6 @@ function loadMenu(setMenu: React.Dispatch<React.SetStateAction<MenuItem[]>>) {
 
 function Menu() {
   const [menu, setMenu] = useState<MenuItem[]>([])
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [order, setOrder] = useState<OrderResult | null>(null)
 
@@ -58,6 +58,12 @@ function Menu() {
     0
   ) ?? 0
 
+  const handleOrderReceived = async (result: OrderResult) => {
+    setOrder(result)
+
+    await playSpeech('Your order has been added to the cart.')
+  }
+
 
   return (
   <>
@@ -66,24 +72,8 @@ function Menu() {
         Voice Ordering Service
       </h1>
 
-      <div className="desktop-cart">
-        <ShoppingCart onClick={() => setIsCartOpen(true)} />
-      </div>
+      <ShoppingCart onClick={() => setIsCartOpen(true)} />
 
-      <button
-        className="hamburger-button"
-        onClick={() => setIsMenuOpen(prev => !prev)}
-        aria-label="Open navigation menu"
-        aria-expanded={isMenuOpen}
-      >
-        ☰
-      </button>
-
-      {isMenuOpen && (
-        <div className="mobile-menu">
-          <ShoppingCart onClick={() => setIsCartOpen(true)} />
-        </div>
-      )}
     </header>
 
     {isCartOpen && (
@@ -134,7 +124,7 @@ function Menu() {
     <h2 style={{ paddingTop: '15px', paddingBottom: '5px' }}>
       Menu
     </h2>
-    <Microphone onOrderReceived={setOrder} />
+    <Microphone onOrderReceived={handleOrderReceived} />
     
     <div className="menu-layout">
       <div className="menu-left">

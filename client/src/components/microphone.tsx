@@ -9,6 +9,7 @@ type MicrophoneProps = {
 function Microphone({ onOrderReceived }: MicrophoneProps) {
     const [isListening, setIsListening] = useState(false)
     const streamRef = useRef<MediaStream | null>(null)
+    const audioContextRef = useRef<AudioContext | null>(null)
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const [audioLevel, setAudioLevel] = useState(0)
     const animationFrameRef = useRef<number | null>(null)
@@ -19,22 +20,19 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
                 const stream = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                 })
-                console.log('Recording started:', stream)
                 streamRef.current = stream
 
                 const mediaRecorder = new MediaRecorder(stream);
                 mediaRecorderRef.current = mediaRecorder;
                 mediaRecorder.start();
-                console.log(mediaRecorder.state);
                 console.log("recorder started");
 
-                let chunks: Blob[] = [];
+                const chunks: Blob[] = [];
+                console.log(chunks)
 
                 mediaRecorder.ondataavailable = (e) => {
                 chunks.push(e.data);
                 };
-
-                console.log(chunks);
 
                 mediaRecorder.onstop = async () => {
                     console.log("recorder stopped")
@@ -42,6 +40,9 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
                     streamRef.current?.getTracks().forEach(track => {
                     track.stop()
                     })
+
+                    await audioContextRef.current?.close()
+                    audioContextRef.current = null
 
                     streamRef.current = null
                     mediaRecorderRef.current = null
@@ -60,19 +61,12 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
 
                     const result = await response.json()
                     onOrderReceived?.(result)
+                         
                     console.log('Server response:', result)
-
-                    chunks = []
-
-                    const audioURL = URL.createObjectURL(blob)
-                    const audio = new Audio(audioURL)
-                    audio.addEventListener('canplaythrough', () => {
-                        audio.play()
-                    }, { once: true })
-
                 }
 
                 const audioContext = new AudioContext()
+                audioContextRef.current = audioContext
                 const source = audioContext.createMediaStreamSource(stream)
                 const analyser = audioContext.createAnalyser()
                 source.connect(analyser)

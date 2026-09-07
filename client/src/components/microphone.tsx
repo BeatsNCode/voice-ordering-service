@@ -4,9 +4,10 @@ import type { OrderResult } from '../types/order';
 
 type MicrophoneProps = {
   onOrderReceived?: (order: OrderResult) => void
+  onProcessingChange?: (isProcessing: boolean) => void
 }
 
-function Microphone({ onOrderReceived }: MicrophoneProps) {
+function Microphone({ onOrderReceived, onProcessingChange }: MicrophoneProps) {
     const [isListening, setIsListening] = useState(false)
     const streamRef = useRef<MediaStream | null>(null)
     const audioContextRef = useRef<AudioContext | null>(null)
@@ -51,6 +52,8 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
                         type: mediaRecorder.mimeType
                     })
 
+                    onProcessingChange?.(true)
+
                     const response = await fetch('/api/audio', {
                         method: 'POST',
                         headers: {
@@ -91,7 +94,10 @@ function Microphone({ onOrderReceived }: MicrophoneProps) {
                 setIsListening(true)
             } catch (error) {
                 console.error('Error accessing microphone', error)
+            } finally {
+                onProcessingChange?.(false)
             }
+            
         } else {
             mediaRecorderRef.current?.stop()
 

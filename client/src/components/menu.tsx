@@ -39,6 +39,7 @@ function Menu() {
   const [menu, setMenu] = useState<MenuItem[]>([])
   const [isCartOpen, setIsCartOpen] = useState(false)
   const [order, setOrder] = useState<OrderResult | null>(null)
+  const [isProcessingOrder, setIsProcessingOrder] = useState(false)
 
   useEffect(() => {
     const cleanup = loadMenu(setMenu)
@@ -124,7 +125,10 @@ function Menu() {
     <h2 style={{ paddingTop: '15px', paddingBottom: '5px' }}>
       Menu
     </h2>
-    <Microphone onOrderReceived={handleOrderReceived} />
+    <Microphone 
+      onOrderReceived={handleOrderReceived}
+      onProcessingChange={setIsProcessingOrder}
+    />
     
     <div className="menu-layout">
       <div className="menu-left">

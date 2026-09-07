@@ -20,13 +20,13 @@ h2 {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 20px;
   position: relative;
 }
 
 .app-header h1 {
   margin: 0;
+  font-size: 32px;
 }
 
 .desktop-cart {
@@ -219,15 +219,17 @@ h2 {
 
 .cart-close-button {
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 20px;
+  right: 20px;
 
   background: none;
   border: none;
-
   font-size: 28px;
   cursor: pointer;
+
+  z-index: 1001;
 }
+ 
 
 .shopping-cart-drawer {
   position: fixed;
@@ -253,7 +255,6 @@ h2 {
     padding-bottom: 120px;
   }
 
-  @media (max-width: 768px) {
   .desktop-cart {
     display: none;
   }
@@ -273,7 +274,6 @@ h2 {
     border: 1px solid #3a3c45;
     border-radius: 8px;
   }
-}
 
   .menu-layout {
     flex-direction: column;
@@ -325,5 +325,39 @@ h2 {
 
   .microphone-label {
     font-size: 13px;
+  }
+
+  .shopping-cart-drawer {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100dvh;
+
+    padding: 32px 24px;
+    box-sizing: border-box;
+
+    background: #23242b;
+    z-index: 1000;
+  }
+
+  .cart-close-button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 44px;
+    height: 44px;
+
+    background: transparent;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+
+    z-index: 1001;
   }
 }

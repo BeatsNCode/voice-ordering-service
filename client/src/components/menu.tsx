@@ -66,18 +66,7 @@ function Menu() {
         Voice Ordering Service
       </h1>
 
-      <div className="desktop-cart">
-        <ShoppingCart onClick={() => setIsCartOpen(true)} />
-      </div>
-
-      <button
-        className="hamburger-button"
-        onClick={() => setIsMenuOpen(prev => !prev)}
-        aria-label="Open navigation menu"
-        aria-expanded={isMenuOpen}
-      >
-        ☰
-      </button>
+      <ShoppingCart onClick={() => setIsCartOpen(true)} />
 
       {isMenuOpen && (
         <div className="mobile-menu">

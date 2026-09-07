@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Microphone from './microphone';
 import ShoppingCart from './shoppingCart';
+import type { OrderResult } from '../types/order';
 
 type MenuItem = {
   name: string
@@ -37,6 +38,7 @@ function Menu() {
   const [menu, setMenu] = useState<MenuItem[]>([])
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [order, setOrder] = useState<OrderResult | null>(null)
 
   useEffect(() => {
     const cleanup = loadMenu(setMenu)
@@ -50,6 +52,12 @@ function Menu() {
   const drinkItems = menu.filter(item => item.category === 'drink')
 
   const dessertItems = menu.filter(item => item.category === 'dessert')
+
+  const orderTotal = order?.availableItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  ) ?? 0
+
 
   return (
   <>
@@ -90,15 +98,43 @@ function Menu() {
 
         <h2>Your Order</h2>
 
+        {order?.availableItems.map((item) => (
+          <div key={item.item_id} className="cart-item">
+            <div className="cart-item-main">
+              <h4>{item.name}</h4>
 
+              {item.quantity > 1 && (
+              <p className="cart-item-price">
+                ${item.price} (x{item.quantity})
+              </p>
+              )}
+              {item.quantity === 1 && (
+              <p className="cart-item-price">
+                ${item.price}
+              </p>
+              )}
+
+            </div>
+            <div className="cart-item-details">
+              <span>Qty {item.quantity}</span>
+            </div>
+      
+          </div>
+        ))}
+        {order && order.availableItems.length > 0 && (
+          <div className="cart-total">
+            <span style={{ fontWeight: 'bold' }}>Total</span>
+            <strong>${orderTotal.toFixed(2)}</strong>
+          </div>
+        )}
 
       </aside>
     )}
 
     <h2 style={{ paddingTop: '15px', paddingBottom: '5px' }}>
-      MENU
+      Menu
     </h2>
-    <Microphone />
+    <Microphone onOrderReceived={setOrder} />
     
     <div className="menu-layout">
       <div className="menu-left">

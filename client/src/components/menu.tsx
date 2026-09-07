@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Microphone from './microphone';
 import ShoppingCart from './shoppingCart';
 import type { OrderResult } from '../types/order';
-import { playSpeech } from './playSpeech'
+import { playSpeech, SpeechLogic } from './playSpeech'
 
 type MenuItem = {
   name: string
@@ -60,8 +60,11 @@ function Menu() {
 
   const handleOrderReceived = async (result: OrderResult) => {
     setOrder(result)
+    console.log(result)
 
-    await playSpeech('Your order has been added to the cart.')
+    const speechText = await SpeechLogic(result)
+
+    playSpeech(speechText)
   }
 
 

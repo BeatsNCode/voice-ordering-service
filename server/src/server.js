@@ -1,7 +1,7 @@
 import express from 'express';
 import loadMenu from './loadMenu.js';
 import {transcribeAudio} from './speech/transcribeAudio.js';
-import {parseOrder} from './speech/orderParser.js';
+import {interpretOrder} from './order/interpretOrder.js';
 
 const app = express();
 const port = 3000;
@@ -22,13 +22,7 @@ app.post('/api/audio', async (req, res) => {
       });
     });
 
-    // Process the audioBuffer here (e.g., send it to a speech-to-text service)
-    console.log('Received audio data:', audioBuffer);
-    console.log('Audio bytes:', audioBuffer.length)
-
     const contentType = req.headers['content-type']
-
-    console.log('Sending audio to Deepgram...')
 
     const transcript = await transcribeAudio(
         audioBuffer,
@@ -36,11 +30,9 @@ app.post('/api/audio', async (req, res) => {
     )
 
     const menu = await loadMenu()
-    const orderItems = parseOrder(transcript, menu)
+    const orderItems = await interpretOrder(transcript, menu)
 
     console.log('Order items:', orderItems)
-
-
     console.log('Transcript:', transcript)
 
 

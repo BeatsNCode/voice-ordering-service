@@ -33,6 +33,12 @@ export const interpretOrder = async (transcript, menu) => {
                                 item_id: {
                                     type: "string"
                                 },
+                                name: {
+                                    type: "string"
+                                },
+                                price: {
+                                    type: "number"
+                                },
                                 quantity: {
                                     type: "integer",
                                     minimum: 1
@@ -41,7 +47,7 @@ export const interpretOrder = async (transcript, menu) => {
                                     type: "boolean"
                                 }
                             },
-                            required: ["item_id", "quantity", "available"]
+                            required: ["item_id", "name", "price", "quantity", "available"]
                         }
                     }
                 },
@@ -53,10 +59,11 @@ export const interpretOrder = async (transcript, menu) => {
     const result = JSON.parse(interaction.output_text);
     const orderItems = result.items.map(item => ({
         item_id: item.item_id,
+        name: item.name,
+        price: item.price,
         quantity: item.quantity,
         available: item.available
     }));
 
-    console.log(orderItems);
     return orderItems;
 };

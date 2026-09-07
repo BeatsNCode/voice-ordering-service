@@ -1,8 +1,9 @@
-import {interpretOrder} from './order/interpretOrder.js';
+import {interpretOrder} from './interpretOrder.js';
 
 export const validateOrder = async (transcript, menu) => {
     const orderItems = await interpretOrder(transcript, menu);
-    const validItems = orderItems.filter(item => menu.some(menuItem => menuItem.item_id === item.item_id));
+    const available = orderItems.filter(item => menu.some(menuItem => menuItem.item_id === item.item_id && menuItem.available === true));
 
-    return validItems;
+    return available;
 };
+

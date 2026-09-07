@@ -2,6 +2,7 @@ import express from 'express';
 import loadMenu from './loadMenu.js';
 import {transcribeAudio} from './speech/transcribeAudio.js';
 import {interpretOrder} from './order/interpretOrder.js';
+import {validateOrder} from './order/validateOrder.js';
 
 const app = express();
 const port = 3000;
@@ -30,15 +31,18 @@ app.post('/api/audio', async (req, res) => {
     )
 
     const menu = await loadMenu()
-    const orderItems = await interpretOrder(transcript, menu)
+    const requestedItems = await interpretOrder(transcript, menu)
+    const availableItems = await validateOrder(transcript, menu)
 
-    console.log('Order items:', orderItems)
+    console.log('Requested items:', requestedItems)
+    console.log('Available items:', availableItems)
     console.log('Transcript:', transcript)
 
 
     res.status(200).json({
         transcript,
-        orderItems
+        requestedItems: requestedItems,
+        availableItems: availableItems
     })
 
   } catch (error) {

@@ -1,7 +1,12 @@
 import { Mic } from 'lucide-react';
 import { useRef, useState } from 'react';
+import type { OrderResult } from '../types/order';
 
-function Microphone() {
+type MicrophoneProps = {
+  onOrderReceived?: (order: OrderResult) => void
+}
+
+function Microphone({ onOrderReceived }: MicrophoneProps) {
     const [isListening, setIsListening] = useState(false)
     const streamRef = useRef<MediaStream | null>(null)
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -54,6 +59,7 @@ function Microphone() {
                     })
 
                     const result = await response.json()
+                    onOrderReceived?.(result)
                     console.log('Server response:', result)
 
                     chunks = []

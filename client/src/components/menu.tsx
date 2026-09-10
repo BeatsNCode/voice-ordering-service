@@ -81,7 +81,7 @@ function Menu() {
         Voice Ordering Service
       </h1>
 
-      <ShoppingCart onClick={() => setIsCartOpen(true)} hasUpdate={hasCartItems}/>
+      <ShoppingCart onClick={handleCartClick} hasUpdate={hasCartItems}/>
 
     </header>
 

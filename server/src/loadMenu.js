@@ -5,7 +5,7 @@ const loadMenu = () => {
   const results = []
 
   return new Promise((resolve, reject) => {
-    createReadStream('../data/menu.csv')
+    createReadStream(new URL('../data/menu.csv', import.meta.url))
       .pipe(csv())
       .on('data', (data) => {
           results.push({

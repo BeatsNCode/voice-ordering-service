@@ -6,8 +6,6 @@ The application allows a customer to place an order using their microphone. Spok
 
 ## Project Status
 
-✅ MVP complete
-
 The core voice-ordering flow is functional:
 
 - Browser microphone recording
@@ -448,5 +446,3 @@ Shopping Cart
   ↓
 Speech Response
 ```
-
-The project is intentionally being developed incrementally so that each layer of the voice application architecture can be understood, implemented, and tested independently.
